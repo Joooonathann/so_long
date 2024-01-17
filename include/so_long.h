@@ -25,5 +25,6 @@ int         is_valid_object_map(t_map_info *map);
 int         set_malloc_map(t_map_info *map);
 void        set_object_map(const char *path_map, t_map_info *map);
 int         wall_surround_map(t_map_info *map);
+int         flood_fill_map(t_map_info map);
 
 #endif
