@@ -76,9 +76,6 @@ int flood_fill_map(t_map_info map)
     flood_fill(&map_tmp, spawn_info(map_tmp, 1), spawn_info(map_tmp, 2));
     if ((map_tmp.collectible_count != map.collectible_count) || (map_tmp.exit_count != map.exit_count))
         return (0);
-    int y = 0;
-    while (y < map_tmp.y)
-        printf("%s\n", map_tmp.map[y++]);
     destroy_map(map_tmp);
     return (1);
 }

@@ -9,7 +9,7 @@ static int get_size_primary(int fd)
 	buff = ' ';
 	x = 0;
 	read_on = 1;
-	while (buff != '\n' || read_on == 0)
+	while (buff != '\n' && read_on != 0)
 	{
 		read_on = read(fd, &buff, 1);
 		if (buff != '\n')

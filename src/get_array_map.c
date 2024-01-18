@@ -5,6 +5,8 @@ t_map_info  get_array_map(const char *path_map)
 	t_map_info  map;
 
 	map = initialize_map();
+	if (!is_valid_path(path_map))
+		return ((map.is_error = 1), map);
 	if (!get_size_map(path_map, &map))
 		return ((map.is_error = 1), map);
 	if (!set_malloc_map(&map))
