@@ -7,14 +7,14 @@
 
 typedef struct map_info
 {
-    int     x;
-    int     y;
-    char    **map;
-    int     is_valid;
-    int     is_error;
-    int     exit_count;
-    int     spawn_count;
-    int     collectible_count;
+	int     x;
+	int     y;
+	char    **map;
+	int     is_valid;
+	int     is_error;
+	int     exit_count;
+	int     spawn_count;
+	int     collectible_count;
 }   t_map_info;
 
 t_map_info  get_array_map(const char *path_map);
@@ -27,5 +27,6 @@ void        set_object_map(const char *path_map, t_map_info *map);
 int         wall_surround_map(t_map_info *map);
 int         flood_fill_map(t_map_info map);
 int         is_valid_path(const char *path_map);
+void		errors_controller(int error_code);
 
 #endif
