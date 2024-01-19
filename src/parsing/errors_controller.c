@@ -1,7 +1,7 @@
 #include "so_long.h"
 #include <stdio.h>
 
-void    errors_controller(int error_code)
+void    errors_controller(int error_code, t_map_info *map)
 {
 	if (error_code == 1)
 		printf("Error\nLe fichier n'est pas valide.\n");
@@ -17,5 +17,7 @@ void    errors_controller(int error_code)
 		printf("Error\nLa map contient des objets invalide.\n");
 	else if (error_code == 7)
 		printf("Error\nLe flood fill n'a pas pus aboutir.\n");
+	if (map->map != NULL)
+		destroy_map(*map);
 	exit(1);
 }

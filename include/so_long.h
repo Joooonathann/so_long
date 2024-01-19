@@ -27,6 +27,6 @@ void        set_object_map(const char *path_map, t_map_info *map);
 int         wall_surround_map(t_map_info *map);
 int         flood_fill_map(t_map_info map);
 int         is_valid_path(const char *path_map);
-void		errors_controller(int error_code);
+void    errors_controller(int error_code, t_map_info *map);
 
 #endif

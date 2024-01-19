@@ -72,10 +72,16 @@ int flood_fill_map(t_map_info map)
 
     map_tmp = mapdup(map);
     if (map_tmp.is_error)
+    {
+        destroy_map(map_tmp);
         return (0);
+    }
     flood_fill(&map_tmp, spawn_info(map_tmp, 1), spawn_info(map_tmp, 2));
     if ((map_tmp.collectible_count != map.collectible_count) || (map_tmp.exit_count != map.exit_count))
+    {
+        destroy_map(map_tmp);
         return (0);
+    }
     destroy_map(map_tmp);
     return (1);
 }
