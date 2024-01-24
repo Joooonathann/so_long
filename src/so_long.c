@@ -2,12 +2,22 @@
 #include "../MLX42/include/MLX42/MLX42.h"
 #include <stdio.h>
 
+typedef struct objects
+{
+    int x;
+    int y;
+    struct objects *next;
+} t_object;
+
+
+
 static int  create_map()
 {
 	
 }
 
 mlx_image_t* img;
+t_object *wall;
 
 void hook(void* param)
 {
@@ -29,23 +39,35 @@ void hook(void* param)
     if (mlx_is_key_down(param, MLX_KEY_RIGHT))
         new_x += 5;
 
-    // Vérification de la collision avec le mur
-    int wall_x = 300; // Coordonnées X du coin supérieur gauche du mur
-    int wall_y = 300; // Coordonnées Y du coin supérieur gauche du mur
-    int wall_width = 100; // Largeur du mur
-    int wall_height = 100; // Hauteur du mur
+    int wall_x = 300;
+    int wall_y = 300;
+    int wall_width = 100;
+    int wall_height = 100;
 
     if ((new_x + img->width <= wall_x ||
           new_x >= wall_x + wall_width ||
           new_y + img->height <= wall_y ||
           new_y >= wall_y + wall_height))
     {
-        // Mettre à jour la position uniquement si aucune collision avec le mur n'est détectée
         img->instances[0].x = new_x;
         img->instances[0].y = new_y;
     }
 }
 
+void    create_object(int x, int y)
+{
+    t_object *objects;
+    t_object *current;
+
+    current = objects;
+    while (objects->next != NULL)
+    {
+        if (objects->next == NULL)
+            objects->next = objects;
+        objects = objects->next;
+    }
+
+}
 
 int main(void)
 {
@@ -61,7 +83,19 @@ int main(void)
 	mlx_image_to_window(mlx, img, 0, 0);
 
 	mure = mlx_texture_to_image(mlx, mur);
-	
+	int i = 0;
+    int b;
+    while (i < map.map[i])
+    {
+        b = 0;
+        while (map.map[i][b])
+        {
+            if (map.map[i][b] == '1')
+                create_object();
+            b++;
+        }
+        i++;
+    }
 	mlx_image_to_window(mlx, mure, 300, 300);
 
 	mlx_loop_hook(mlx, &hook, mlx);
