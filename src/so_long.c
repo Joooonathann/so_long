@@ -17,23 +17,31 @@ static int  create_map()
 }
 
 mlx_image_t* img;
+mlx_image_t* mure;
 t_object *wall;
+t_object *objs = NULL;
 
 int colision_check(int new_x, int new_y)
 {
-    int wall_x = 300;
-    int wall_y = 300;
     int wall_width = 100;
     int wall_height = 100;
 
-    if ((new_x + img->width <= wall_x ||
-          new_x >= wall_x + wall_width ||
-          new_y + img->height <= wall_y ||
-          new_y >= wall_y + wall_height))
+    t_object *current;
+    current = objs;
+    while (current->next != NULL)
     {
+        printf("%d  %d \n", current->x, current->y);
+        if ((new_x + img->width <= current->x ||
+          new_x >= current->x + wall_width ||
+          new_y + img->height <= current->y ||
+          new_y >= current->y + wall_height))
+        {
         img->instances[0].x = new_x;
         img->instances[0].y = new_y;
+        current = current->next;
         return (1);
+        }
+        current = current->next;
     }
     return (0);
 }
@@ -57,36 +65,63 @@ void hook(void* param)
 
 void    create_object(int x, int y)
 {
-    t_object *objects;
+    t_object *new;
     t_object *current;
 
-    current = objects;
-    while (objects->next != NULL)
-    {
-        if (objects->next == NULL)
-            objects->next = objects;
-        objects = objects->next;
-    }
+    new = malloc(sizeof(t_object));
+    new->x = x;
+    new->y = y;
+    new->next = NULL;
 
+    if (objs == NULL) {
+        objs = new;
+    } else {
+        current = objs;
+        while (current->next != NULL)
+            current = current->next;
+
+        current->next = new;
+    }
+}
+
+void display_map(mlx_t* mlx, t_map_info map)
+{
+    int a, b, z, p;
+    mlx_texture_t* mur = mlx_load_png("./mur.png");
+    mure = mlx_texture_to_image(mlx, mur);
+    a = 0;
+    p = 0;
+    while (a < map.y)
+    {
+        b = 0;
+        z = 0;
+        while (map.map[a][b])
+        {
+            if (map.map[a][b] == '1')
+            {
+                create_object(z, p);
+                mlx_image_to_window(mlx, mure, z, p);
+            }
+            z += 100;
+            b++;
+        }
+        p += 100;
+        a++;
+    }
 }
 
 int main(void)
 {
 	t_map_info  map;
-	mlx_image_t* mure;
 
 	map = get_array_map("./map.ber");
-	mlx_t* mlx = mlx_init(1920, 1080, "Test", true);
+	mlx_t* mlx = mlx_init(100 * map.x, 100 * map.y, "Test", true);
 	mlx_texture_t* texture = mlx_load_png("./player.png");
-	mlx_texture_t* mur = mlx_load_png("./mur.png");
 	img = mlx_texture_to_image(mlx, texture);
-	
-	mlx_image_to_window(mlx, img, 0, 0);
-
-	mure = mlx_texture_to_image(mlx, mur);
-	mlx_image_to_window(mlx, mure, 300, 300);
 
 	mlx_loop_hook(mlx, &hook, mlx);
+    display_map(mlx, map);
+    mlx_image_to_window(mlx, img, 110, 110);
 	mlx_loop(mlx);
 
 	mlx_delete_image(mlx, img);
