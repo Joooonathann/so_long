@@ -19,26 +19,8 @@ static int  create_map()
 mlx_image_t* img;
 t_object *wall;
 
-void hook(void* param)
+int colision_check(int new_x, int new_y)
 {
-    mlx_t* mlx;
-    mlx = param;
-
-    if (mlx_is_key_down(param, MLX_KEY_ESCAPE))
-        mlx_close_window(param);
-
-    int new_x = img->instances[0].x;
-    int new_y = img->instances[0].y;
-
-    if (mlx_is_key_down(param, MLX_KEY_UP))
-        new_y -= 5;
-    if (mlx_is_key_down(param, MLX_KEY_DOWN))
-        new_y += 5;
-    if (mlx_is_key_down(param, MLX_KEY_LEFT))
-        new_x -= 5;
-    if (mlx_is_key_down(param, MLX_KEY_RIGHT))
-        new_x += 5;
-
     int wall_x = 300;
     int wall_y = 300;
     int wall_width = 100;
@@ -51,7 +33,26 @@ void hook(void* param)
     {
         img->instances[0].x = new_x;
         img->instances[0].y = new_y;
+        return (1);
     }
+    return (0);
+}
+
+void hook(void* param)
+{
+    mlx_t* mlx;
+    mlx = param;
+
+    if (mlx_is_key_down(param, MLX_KEY_ESCAPE))
+        mlx_close_window(param);
+
+    int new_x = img->instances[0].x;
+    int new_y = img->instances[0].y;
+
+    if (mlx_is_key_down(param, MLX_KEY_UP) && !colision_check(new_x, new_y -= 5));
+    if (mlx_is_key_down(param, MLX_KEY_DOWN) && !colision_check(new_x, new_y += 5));
+    if (mlx_is_key_down(param, MLX_KEY_LEFT) && !colision_check(new_x -= 5, new_y));
+    if (mlx_is_key_down(param, MLX_KEY_RIGHT) && !colision_check(new_x += 5, new_y));
 }
 
 void    create_object(int x, int y)
@@ -83,19 +84,6 @@ int main(void)
 	mlx_image_to_window(mlx, img, 0, 0);
 
 	mure = mlx_texture_to_image(mlx, mur);
-	int i = 0;
-    int b;
-    while (i < map.map[i])
-    {
-        b = 0;
-        while (map.map[i][b])
-        {
-            if (map.map[i][b] == '1')
-                create_object();
-            b++;
-        }
-        i++;
-    }
 	mlx_image_to_window(mlx, mure, 300, 300);
 
 	mlx_loop_hook(mlx, &hook, mlx);
