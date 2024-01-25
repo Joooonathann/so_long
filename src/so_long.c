@@ -39,7 +39,13 @@ int collision_check(int new_x, int new_y)
         {
             return 1; // Collision détectée
         }
-
+        else if (!(new_x + img->width <= current->x ||
+              new_x >= current->x + current->width ||
+              new_y + img->height <= current->y ||
+              new_y >= current->y + current->height) && (current->type == 3))
+              {
+                current->sprite->instances[0].x += 5;
+              }
         printf("Collision with object at (%d, %d)\n", current->x, current->y);
         current = current->next;
     }
@@ -59,6 +65,7 @@ void check_object()
               img->instances[0].y + img->height <= current->y ||
               img->instances[0].y >= current->y + current->height) && (current->type == 2) && (current->is_active == 1))
         {
+            
             current->sprite->enabled = false;
             current->is_active = false;
             printf("Dropped the item at (%d, %d)\n", current->x, current->y);
