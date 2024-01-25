@@ -60,7 +60,6 @@ int take_item(int new_x, int new_y)
         int diff_x = img_center_x - obj_center_x;
         int diff_y = img_center_y - obj_center_y;
 
-        // Condition de collision sans utiliser abs
         if (current->type == 2 &&
             diff_x * diff_x < (current->sprite->width / 2 + combined_radius) * (current->sprite->width / 2 + combined_radius) &&
             diff_y * diff_y < (current->sprite->height / 2 + combined_radius) * (current->sprite->height / 2 + combined_radius))
