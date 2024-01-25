@@ -21,34 +21,34 @@ mlx_image_t* mure;
 t_object *wall;
 t_object *objs = NULL;
 
-int colision_check(int new_x, int new_y)
+int collision_check(int new_x, int new_y)
 {
     int wall_width = 100;
     int wall_height = 100;
 
     t_object *current;
     current = objs;
-    while (current->next != NULL)
+
+    while (current != NULL)
     {
-        printf("%d  %d \n", current->x, current->y);
-        if ((new_x + img->width <= current->x ||
-          new_x >= current->x + wall_width ||
-          new_y + img->height <= current->y ||
-          new_y >= current->y + wall_height))
+        if (!(new_x + img->width <= current->x ||
+              new_x >= current->x + wall_width ||
+              new_y + img->height <= current->y ||
+              new_y >= current->y + wall_height))
         {
-        img->instances[0].x = new_x;
-        img->instances[0].y = new_y;
-        current = current->next;
-        return (1);
+            return 1; // Collision détectée
         }
+
+        printf("Collision with object at (%d, %d)\n", current->x, current->y);
         current = current->next;
     }
-    return (0);
+
+    return 0; // Aucune collision détectée
 }
 
-void hook(void* param)
+void hook(void *param)
 {
-    mlx_t* mlx;
+    mlx_t *mlx;
     mlx = param;
 
     if (mlx_is_key_down(param, MLX_KEY_ESCAPE))
@@ -57,11 +57,32 @@ void hook(void* param)
     int new_x = img->instances[0].x;
     int new_y = img->instances[0].y;
 
-    if (mlx_is_key_down(param, MLX_KEY_UP) && !colision_check(new_x, new_y -= 5));
-    if (mlx_is_key_down(param, MLX_KEY_DOWN) && !colision_check(new_x, new_y += 5));
-    if (mlx_is_key_down(param, MLX_KEY_LEFT) && !colision_check(new_x -= 5, new_y));
-    if (mlx_is_key_down(param, MLX_KEY_RIGHT) && !colision_check(new_x += 5, new_y));
+    if (mlx_is_key_down(param, MLX_KEY_UP) && !collision_check(new_x, new_y - 5))
+    {
+        new_y -= 5;
+        printf("Moving UP\n");
+    }
+    if (mlx_is_key_down(param, MLX_KEY_DOWN) && !collision_check(new_x, new_y + 5))
+    {
+        new_y += 5;
+        printf("Moving DOWN\n");
+    }
+    if (mlx_is_key_down(param, MLX_KEY_LEFT) && !collision_check(new_x - 5, new_y))
+    {
+        new_x -= 5;
+        printf("Moving LEFT\n");
+    }
+    if (mlx_is_key_down(param, MLX_KEY_RIGHT) && !collision_check(new_x + 5, new_y))
+    {
+        new_x += 5;
+        printf("Moving RIGHT\n");
+    }
+
+    // Mettre à jour la position uniquement si aucune collision n'est détectée
+    img->instances[0].x = new_x;
+    img->instances[0].y = new_y;
 }
+
 
 void    create_object(int x, int y)
 {
@@ -121,6 +142,7 @@ int main(void)
 
 	mlx_loop_hook(mlx, &hook, mlx);
     display_map(mlx, map);
+    mlx_resize_image(img, 50, 50);
     mlx_image_to_window(mlx, img, 110, 110);
 	mlx_loop(mlx);
 
