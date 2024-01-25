@@ -31,7 +31,7 @@ int collision_check(int new_x, int new_y)
         if (!(new_x + img->width <= current->sprite->instances[0].x ||
               new_x >= current->sprite->instances[0].x + current->sprite->width ||
               new_y + img->height <= current->sprite->instances[0].y ||
-              new_y >= current->sprite->instances[0].y + current->sprite->height))
+              new_y >= current->sprite->instances[0].y + current->sprite->height) && current->is_active)
         {
             return 1; // Collision détectée
         }
@@ -42,18 +42,39 @@ int collision_check(int new_x, int new_y)
     return 0; // Aucune collision détectée
 }
 
-int pick_item(int x, int y)
+
+int take_item(int new_x, int new_y)
 {
-    if (collision_check(x + 5, y))
-        return (1);
-    else if (collision_check(x - 5, y))
-        return (1);
-    else if (collision_check(x, y - 5))
-        return (1);
-    else if (collision_check(x, y + 5))
-        return (1);
-    return (0);
+    t_object *current;
+    current = objs;
+
+    while (current != NULL)
+    {
+        int img_center_x = new_x + img->width / 2;
+        int img_center_y = new_y + img->height / 2;
+        int obj_center_x = current->sprite->instances[0].x + current->sprite->width / 2;
+        int obj_center_y = current->sprite->instances[0].y + current->sprite->height / 2;
+
+        int combined_radius = current->sprite->width;
+
+        int diff_x = img_center_x - obj_center_x;
+        int diff_y = img_center_y - obj_center_y;
+
+        // Condition de collision sans utiliser abs
+        if (current->type == 2 &&
+            diff_x * diff_x < (current->sprite->width / 2 + combined_radius) * (current->sprite->width / 2 + combined_radius) &&
+            diff_y * diff_y < (current->sprite->height / 2 + combined_radius) * (current->sprite->height / 2 + combined_radius))
+        {
+            current->sprite->enabled = false;
+            current->is_active = 0;
+            return 1;
+        }
+        current = current->next;
+    }
+
+    return 0;
 }
+
 
 void hook(void *param)
 {
@@ -86,7 +107,7 @@ void hook(void *param)
         new_x += 5;
         printf("Moving RIGHT\n");
     }
-    if (mlx_is_key_down(param, MLX_KEY_F) && pick_item(new_x, new_y))
+    if (mlx_is_key_down(param, MLX_KEY_F) && take_item(new_x, new_y))
     {
         printf("CAPTURE the item\n");
     }
@@ -180,7 +201,7 @@ int main(void)
 
 	map = get_array_map("./map.ber");
 	mlx_t* mlx = mlx_init(100 * map.x, 100 * map.y, "Test", true);
-	mlx_texture_t* texture = mlx_load_png("./mur.png");
+	mlx_texture_t* texture = mlx_load_png("./player.png");
 	img = mlx_texture_to_image(mlx, texture);
 
 	mlx_loop_hook(mlx, &hook, mlx);
