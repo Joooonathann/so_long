@@ -6,6 +6,11 @@ typedef struct objects
 {
     int x;
     int y;
+    int width;
+    int height;
+    int type;
+    int is_active;
+    mlx_image_t* sprite;
     struct objects *next;
 } t_object;
 
@@ -17,24 +22,20 @@ static int  create_map()
 }
 
 mlx_image_t* img;
-mlx_image_t* mure;
 t_object *wall;
 t_object *objs = NULL;
 
 int collision_check(int new_x, int new_y)
 {
-    int wall_width = 100;
-    int wall_height = 100;
-
     t_object *current;
     current = objs;
 
     while (current != NULL)
     {
         if (!(new_x + img->width <= current->x ||
-              new_x >= current->x + wall_width ||
+              new_x >= current->x + current->width ||
               new_y + img->height <= current->y ||
-              new_y >= current->y + wall_height))
+              new_y >= current->y + current->height) && (current->type == 1))
         {
             return 1; // Collision détectée
         }
@@ -44,6 +45,26 @@ int collision_check(int new_x, int new_y)
     }
 
     return 0; // Aucune collision détectée
+}
+
+void check_object()
+{
+    t_object *current;
+    current = objs;
+
+    while (current != NULL)
+    {
+        if (!(img->instances[0].x + img->width <= current->x ||
+              img->instances[0].x >= current->x + current->width ||
+              img->instances[0].y + img->height <= current->y ||
+              img->instances[0].y >= current->y + current->height) && (current->type == 2) && (current->is_active == 1))
+        {
+            current->sprite->enabled = false;
+            current->is_active = false;
+            printf("Dropped the item at (%d, %d)\n", current->x, current->y);
+        }
+        current = current->next;
+    }
 }
 
 void hook(void *param)
@@ -77,14 +98,19 @@ void hook(void *param)
         new_x += 5;
         printf("Moving RIGHT\n");
     }
+    if (mlx_is_key_down(param, MLX_KEY_F))
+    {
+        check_object();
+        printf("Drop the item\n");
+    }
 
-    // Mettre à jour la position uniquement si aucune collision n'est détectée
     img->instances[0].x = new_x;
     img->instances[0].y = new_y;
 }
 
 
-void    create_object(int x, int y)
+
+void    create_object(int x, int y, int width, int height, int is_active,mlx_image_t* sprite, int type)
 {
     t_object *new;
     t_object *current;
@@ -92,24 +118,37 @@ void    create_object(int x, int y)
     new = malloc(sizeof(t_object));
     new->x = x;
     new->y = y;
+    new->width = width;
+    new->height = height;
+    new->is_active = is_active;
+    new->sprite = sprite;
+    new->type = type;
     new->next = NULL;
 
     if (objs == NULL) {
         objs = new;
-    } else {
+    } 
+    else {
         current = objs;
         while (current->next != NULL)
             current = current->next;
-
         current->next = new;
     }
+}
+
+mlx_image_t *get_last_object()
+{
+    t_object *current;
+    current = objs;
+    while (current->next != NULL)
+        current = current->next;
+    return (current->sprite);
 }
 
 void display_map(mlx_t* mlx, t_map_info map)
 {
     int a, b, z, p;
-    mlx_texture_t* mur = mlx_load_png("./mur.png");
-    mure = mlx_texture_to_image(mlx, mur);
+    mlx_image_t* wall = mlx_texture_to_image(mlx, mlx_load_png("./mur.png"));
     a = 0;
     p = 0;
     while (a < map.y)
@@ -120,8 +159,13 @@ void display_map(mlx_t* mlx, t_map_info map)
         {
             if (map.map[a][b] == '1')
             {
-                create_object(z, p);
-                mlx_image_to_window(mlx, mure, z, p);
+                create_object(z, p, wall->width, wall->height, 1, NULL, 1);
+                mlx_image_to_window(mlx, wall, z, p);
+            }
+            else if (map.map[a][b] == 'C')
+            {
+                create_object(z, p, 50, 50, 1, mlx_texture_to_image(mlx, mlx_load_png("./egg.png")), 2);
+                mlx_image_to_window(mlx, get_last_object(), z, p);
             }
             z += 100;
             b++;
