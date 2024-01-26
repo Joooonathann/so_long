@@ -217,18 +217,77 @@ void display_map(mlx_t* mlx, t_map_info map)
         {
             if (map.map[a][b] == '1')
             {
-                create_object(1, cut_tiles(mlx, mlx_load_png("./mur.png"), 0, 0, 100, 100, 50, 50), 1);
+                create_object(1, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 2, 2, 32, 32, 64, 64), 1);
                 mlx_image_to_window(mlx, get_last_object(), z, p);
             }
-            else if (map.map[a][b] == 'C')
+            if (map.map[a][b] == '5')
             {
-                create_object(1, mlx_texture_to_image(mlx, mlx_load_png("./egg.png")), 2);
-                mlx_image_to_window(mlx, get_last_object(), z, p);
+                if (b == 1 && a == 1)
+                {
+                    create_object(1, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 7, 1, 32, 32, 64, 64), 1);
+                    mlx_image_to_window(mlx, get_last_object(), z, p);
+                }
+                else if ((b == map.x - 2) && a == 1)
+                {
+                    create_object(1, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 8, 1, 32, 32, 64, 64), 1);
+                    mlx_image_to_window(mlx, get_last_object(), z, p);
+                }
+                else if (a == 1)
+                {
+                    create_object(1, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 2, 3, 32, 32, 64, 64), 1);
+                    mlx_image_to_window(mlx, get_last_object(), z, p);
+                }
+                else if (b == 1 && a != map.y - 2)
+                {
+                    create_object(1, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 3, 2, 32, 32, 64, 64), 1);
+                    mlx_image_to_window(mlx, get_last_object(), z, p);
+                }
+                else if (b == 1 && a == map.y - 2)
+                {
+                   create_object(1, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 7, 2, 32, 32, 64, 64), 1);
+                    mlx_image_to_window(mlx, get_last_object(), z, p);
+                }
+                else if (a == map.y - 2 && (b != map.x - 2))
+                {
+                    create_object(1, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 2, 1, 32, 32, 64, 64), 1);
+                    mlx_image_to_window(mlx, get_last_object(), z, p);
+                }
+                else if ((a == map.y - 2) && (b == map.x - 2))
+                {
+                    create_object(1, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 8, 2, 32, 32, 64, 64), 1);
+                    mlx_image_to_window(mlx, get_last_object(), z, p);
+                }
+                else if (b == map.x - 2)
+                {
+                    create_object(1, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 1, 2, 32, 32, 64, 64), 1);
+                    mlx_image_to_window(mlx, get_last_object(), z, p);
+                }
             }
-            z += 100;
+            if (map.map[a][b] == '0'  || map.map[a][b] == 'E' || map.map[a][b] == 'C'  || map.map[a][b] == 'P')
+            {
+                if (b == 1 && a == 2)
+                    mlx_image_to_window(mlx, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 1, 7, 32, 32, 64, 64), z, p);
+                else if ((b == map.x - 3) && a == 2)
+                    mlx_image_to_window(mlx, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 3, 7, 32, 32, 64, 64), z, p);
+                else if (a == 2)
+                    mlx_image_to_window(mlx, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 2, 7, 32, 32, 64, 64), z, p);
+                else if (b == 2 && a != map.y - 3)
+                    mlx_image_to_window(mlx, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 1, 8, 32, 32, 64, 64), z, p);
+                else if (b == 2 && a == map.y - 3)
+                    mlx_image_to_window(mlx, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 1, 9, 32, 32, 64, 64), z, p);
+                else if (a == map.y - 3 && (b != map.x - 3))
+                    mlx_image_to_window(mlx, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 2, 9, 32, 32, 64, 64), z, p);
+                else if ((a == map.y - 3) && (b == map.x - 3))
+                    mlx_image_to_window(mlx, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 3, 9, 32, 32, 64, 64), z, p);
+                else if (b == map.x - 3)
+                    mlx_image_to_window(mlx, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 3, 8, 32, 32, 64, 64), z, p);
+                else
+                    mlx_image_to_window(mlx, cut_tiles(mlx, mlx_load_png("./assets/terrain/tile.png"), 2, 8, 32, 32, 64, 64), z, p);
+            }
+            z += 64;
             b++;
         }
-        p += 100;
+        p += 64;
         a++;
     }
 }
@@ -238,7 +297,7 @@ int main(void)
 	t_map_info  map;
 
 	map = get_array_map("./map.ber");
-	mlx_t* mlx = mlx_init(100 * map.x, 100 * map.y, "Test", true);
+	mlx_t* mlx = mlx_init(64 * map.x, 64 * map.y, "Test", true);
 	mlx_texture_t* texture = mlx_load_png("./player.png");
 	img = mlx_texture_to_image(mlx, texture);
 
@@ -249,7 +308,7 @@ int main(void)
 
 
     mlx_resize_image(img, 50, 50);
-    mlx_image_to_window(mlx, img, 110, 110);
+    mlx_image_to_window(mlx, img, 160, 160);
 	mlx_loop(mlx);
 
 	mlx_delete_image(mlx, img);
