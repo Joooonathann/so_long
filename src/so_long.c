@@ -1,6 +1,7 @@
 #include "so_long.h"
 #include "../MLX42/include/MLX42/MLX42.h"
 #include <stdio.h>
+#include <time.h> 
 
 typedef struct objects
 {
@@ -20,6 +21,37 @@ static int  create_map()
 mlx_image_t* img;
 t_object *wall;
 t_object *objs = NULL;
+
+mlx_image_t* cut_tiles(mlx_t* mlx, mlx_texture_t* texture, int line_x, int line_y, int width, int height, int size_x, int size_y) {
+    int start_x = line_x * width;
+    int start_y = line_y * height;
+    if (!mlx || !texture || start_x < 0 || start_y < 0 || width <= 0 || height <= 0 ||
+        start_x + width > texture->width || start_y + height > texture->height)
+        return NULL;
+
+    mlx_image_t* image = mlx_new_image(mlx, width, height);
+    if (!image)
+        return NULL;
+
+    int i = 0;
+    while (i < height) {
+        int j = 0;
+        while (j < width) {
+            int k = 0;
+            while (k < texture->bytes_per_pixel) {
+                uint8_t* pixelx = &texture->pixels[(((i + start_y) * texture->width) + start_x + j) * texture->bytes_per_pixel + k];
+                uint8_t* pixeli = &image->pixels[((i * width) + j) * texture->bytes_per_pixel + k];
+                *pixeli = *pixelx;
+                k++;
+            }
+            j++;
+        }
+        i++;
+    }
+    if (size_x != 0 || size_y != 0)
+        mlx_resize_image(image, size_x, size_y);
+    return image;
+}
 
 int collision_check(int new_x, int new_y)
 {
@@ -81,8 +113,17 @@ int take_item(int new_x, int new_y)
 bool is_jumping = false;
 bool is_on_ground = true;
 
+int idle_frame = 0;
+int run_frame = 0;
+int run_back = 0;
 void hook(void *param)
 {
+    static clock_t start_time = 0;
+    static const int FPS = 10; // 10 FPS
+    static const int FRAME_DURATION = CLOCKS_PER_SEC / FPS;
+
+    clock_t current_time = clock();
+
     mlx_t *mlx;
     mlx = param;
 
@@ -117,12 +158,25 @@ void hook(void *param)
     }
 
     if (is_jumping) {
-        // Appliquer le mouvement vertical
+        run_frame = 0;
+        idle_frame = 0;
+        run_back = 0;
+        int c, v;
+        c = img->instances[0].x;
+        v = img->instances[0].y;
+        mlx_delete_image(param, img);
+        img = cut_tiles(param, mlx_load_png("./assets/jump.png"), idle_frame, 0, 78, 45, 234, 135);
+        mlx_image_to_window(param, img, c, v);
         new_y += jump_velocity * 1.5;
         jump_velocity += gravity;
 
         // Vérifier si le personnage a atteint la hauteur maximale du saut
         if (jump_velocity >= 0.0 || fabs(new_y - img->instances[0].y) >= max_jump_height) {
+             c = img->instances[0].x;
+            v = img->instances[0].y;
+            mlx_delete_image(param, img);
+            img = cut_tiles(param, mlx_load_png("./assets/fall.png"), idle_frame, 0, 78, 45, 234, 135);
+            mlx_image_to_window(param, img, c, v);
             is_jumping = false;
             jump_velocity = -15.0; // Réinitialiser la vitesse de saut pour le prochain saut
         }
@@ -136,17 +190,57 @@ void hook(void *param)
     }
     if (mlx_is_key_down(param, MLX_KEY_LEFT) && !collision_check(new_x - 5, new_y))
     {
+        run_frame = 0;
+        idle_frame = 0;
         new_x -= 5;
+        if ((current_time - start_time) >= FRAME_DURATION && is_on_ground && !is_jumping) {
+            start_time = current_time;
+            int u, i;
+            u = img->instances[0].x;
+            i = img->instances[0].y;
+            mlx_delete_image(param, img);
+            img = cut_tiles(param, mlx_load_png("./assets/run_back.png"), run_back, 0, 78, 45, 234, 135);
+            mlx_image_to_window(param, img, u, i);
+            run_back = (run_back + 1) % 8;
+
+        }
         printf("Moving LEFT\n");
     }
     if (mlx_is_key_down(param, MLX_KEY_RIGHT) && !collision_check(new_x + 5, new_y))
     {
+        run_back = 0;
+        idle_frame = 0;
         new_x += 5;
+        if ((current_time - start_time) >= FRAME_DURATION && is_on_ground && !is_jumping) {
+            start_time = current_time;
+            int u, i;
+            u = img->instances[0].x;
+            i = img->instances[0].y;
+            mlx_delete_image(param, img);
+            img = cut_tiles(param, mlx_load_png("./assets/run.png"), run_frame, 0, 78, 45, 234, 135);
+            mlx_image_to_window(param, img, u, i);
+            run_frame = (run_frame + 1) % 8;
+
+        }
         printf("Moving RIGHT\n");
     }
     if (mlx_is_key_down(param, MLX_KEY_F) && take_item(new_x, new_y))
     {
         printf("CAPTURE the item\n");
+    }
+    if (img->instances[0].x == new_x && img->instances[0].y == new_y && is_on_ground && !is_jumping){
+        run_frame = 0;
+        if ((current_time - start_time) >= FRAME_DURATION) {
+            start_time = current_time;
+            int u, i;
+            u = img->instances[0].x;
+            i = img->instances[0].y;
+            mlx_delete_image(param, img);
+            img = cut_tiles(param, mlx_load_png("./assets/idle.png"), idle_frame, 0, 78, 45, 234, 135);
+            mlx_image_to_window(param, img, u, i);
+            idle_frame = (idle_frame + 1) % 10;
+
+        }
     }
 
     img->instances[0].x = new_x;
@@ -206,44 +300,6 @@ void	ft_lstclear(t_object *lst)
 	lst = NULL;
 }
 
-void custom_memmove(uint8_t *dest, const uint8_t *src, size_t n) {
-    size_t i = 0;
-    while (i < n) {
-        dest[i] = src[i];
-        i++;
-    }
-}
-
-mlx_image_t* cut_tiles(mlx_t* mlx, mlx_texture_t* texture, int line_x, int line_y, int width, int height, int size_x, int size_y) {
-    int start_x = line_x * width;
-    int start_y = line_y * height;
-    if (!mlx || !texture || start_x < 0 || start_y < 0 || width <= 0 || height <= 0 ||
-        start_x + width > texture->width || start_y + height > texture->height)
-        return NULL;
-
-    mlx_image_t* image = mlx_new_image(mlx, width, height);
-    if (!image)
-        return NULL;
-
-    int i = 0;
-    while (i < height) {
-        int j = 0;
-        while (j < width) {
-            int k = 0;
-            while (k < texture->bytes_per_pixel) {
-                uint8_t* pixelx = &texture->pixels[(((i + start_y) * texture->width) + start_x + j) * texture->bytes_per_pixel + k];
-                uint8_t* pixeli = &image->pixels[((i * width) + j) * texture->bytes_per_pixel + k];
-                *pixeli = *pixelx;
-                k++;
-            }
-            j++;
-        }
-        i++;
-    }
-    if (size_x != 0 || size_y != 0)
-        mlx_resize_image(image, size_x, size_y);
-    return image;
-}
 
 void display_map(mlx_t* mlx, t_map_info map)
 {
@@ -335,7 +391,6 @@ void display_map(mlx_t* mlx, t_map_info map)
 
 
 int heart_frame = 0;
-#include <time.h> 
 void ui_auto_refresh(void *param)
 {
     static clock_t start_time = 0;
@@ -369,15 +424,16 @@ int main(void)
 	map = get_array_map("./map.ber");
 	mlx_t* mlx = mlx_init(64 * map.x, 64 * map.y, "Test", true);
 	mlx_texture_t* texture = mlx_load_png("./player.png");
-	img = mlx_texture_to_image(mlx, texture);
+	img = cut_tiles(mlx, mlx_load_png("./assets/idle.png"), 0, 0, 78, 45, 234, 135);
 
 	mlx_loop_hook(mlx, &hook, mlx);
     display_map(mlx, map);
 
+
     ui(mlx);
-    mlx_image_to_window(mlx, cut_tiles(mlx, mlx_load_png("./Chest.png"), 1, 1, 16, 16, 100, 100), 150, 150);
-    mlx_resize_image(img, 50, 50);
+
     mlx_image_to_window(mlx, img, 160, 160);
+    
 	mlx_loop(mlx);
 
 	mlx_delete_image(mlx, img);
