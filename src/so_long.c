@@ -74,6 +74,12 @@ int take_item(int new_x, int new_y)
     return 0;
 }
 
+#include <stdbool.h>
+#include <math.h>
+
+// Déclarer des variables globales pour suivre l'état du saut et du sol
+bool is_jumping = false;
+bool is_on_ground = true;
 
 void hook(void *param)
 {
@@ -86,11 +92,43 @@ void hook(void *param)
     int new_x = img->instances[0].x;
     int new_y = img->instances[0].y;
 
-    if (mlx_is_key_down(param, MLX_KEY_UP) && !collision_check(new_x, new_y - 5))
-    {
-        new_y -= 5;
-        printf("Moving UP\n");
+    static double jump_velocity = -15.0; // Vitesse initiale du saut (vers le haut)
+    static double gravity = 1.0;          // Accélération gravitationnelle
+    static double max_jump_height = 100.0; // Hauteur maximale du saut
+    static double jump_timer = 0.0;        // Timer pour suivre le temps écoulé pendant le saut
+
+    // Gravité
+    if (!collision_check(new_x, new_y + 5)) {
+        new_y += gravity * 6; // Appliquer la gravité
+        is_on_ground = false; // Le personnage est en l'air
+    } else {
+        // Le personnage est au sol
+        is_on_ground = true;
+        is_jumping = false; // Réinitialiser l'état du saut
+        jump_velocity = -15.0; // Réinitialiser la vitesse de saut
     }
+
+    // Saut
+    if (mlx_is_key_down(param, MLX_KEY_UP) && is_on_ground && !is_jumping)
+    {
+        is_jumping = true; // Déclencher le saut
+        is_on_ground = false; // Le personnage n'est plus au sol
+        jump_timer = 0.0;   // Réinitialiser le timer
+    }
+
+    if (is_jumping) {
+        // Appliquer le mouvement vertical
+        new_y += jump_velocity * 1.5;
+        jump_velocity += gravity;
+
+        // Vérifier si le personnage a atteint la hauteur maximale du saut
+        if (jump_velocity >= 0.0 || fabs(new_y - img->instances[0].y) >= max_jump_height) {
+            is_jumping = false;
+            jump_velocity = -15.0; // Réinitialiser la vitesse de saut pour le prochain saut
+        }
+    }
+
+    // Autres contrôles de mouvement
     if (mlx_is_key_down(param, MLX_KEY_DOWN) && !collision_check(new_x, new_y + 5))
     {
         new_y += 5;
@@ -114,6 +152,9 @@ void hook(void *param)
     img->instances[0].x = new_x;
     img->instances[0].y = new_y;
 }
+
+
+
 
 
 
