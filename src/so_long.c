@@ -194,6 +194,45 @@ void	ft_lstclear(t_object *lst)
 	lst = NULL;
 }
 
+void custom_memmove(uint8_t *dest, const uint8_t *src, size_t n) {
+    size_t i = 0;
+    while (i < n) {
+        dest[i] = src[i];
+        i++;
+    }
+}
+
+mlx_image_t* cut_texture(mlx_t* mlx, mlx_texture_t* texture, int line_x, int line_y, int width, int height) {
+    int start_x = line_x * width;
+    int start_y = line_y * height;
+    if (!mlx || !texture || start_x < 0 || start_y < 0 || width <= 0 || height <= 0 ||
+        start_x + width > texture->width || start_y + height > texture->height)
+        return NULL;
+
+    mlx_image_t* image = mlx_new_image(mlx, width, height);
+    if (!image)
+        return NULL;
+
+    int i = 0;
+    while (i < height) {
+        int j = 0;
+        while (j < width) {
+            int k = 0;
+            while (k < texture->bytes_per_pixel) {
+                uint8_t* pixelx = &texture->pixels[(((i + start_y) * texture->width) + start_x + j) * texture->bytes_per_pixel + k];
+                uint8_t* pixeli = &image->pixels[((i * width) + j) * texture->bytes_per_pixel + k];
+                *pixeli = *pixelx;
+                k++;
+            }
+            j++;
+        }
+        i++;
+    }
+
+    return image;
+}
+
+
 int main(void)
 {
 	t_map_info  map;
@@ -205,6 +244,12 @@ int main(void)
 
 	mlx_loop_hook(mlx, &hook, mlx);
     display_map(mlx, map);
+
+    mlx_image_t* imge = cut_texture(mlx, mlx_load_png("./Chest.png"), 7, 1, 16, 16);
+    mlx_resize_image(imge, 50, 50);
+    mlx_image_to_window(mlx, imge, 150, 150);
+
+
     mlx_resize_image(img, 50, 50);
     mlx_image_to_window(mlx, img, 110, 110);
 	mlx_loop(mlx);
