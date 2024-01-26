@@ -202,7 +202,7 @@ void custom_memmove(uint8_t *dest, const uint8_t *src, size_t n) {
     }
 }
 
-mlx_image_t* cut_texture(mlx_t* mlx, mlx_texture_t* texture, int line_x, int line_y, int width, int height) {
+mlx_image_t* cut_texture(mlx_t* mlx, mlx_texture_t* texture, int line_x, int line_y, int width, int height, int size_x, int size_y) {
     int start_x = line_x * width;
     int start_y = line_y * height;
     if (!mlx || !texture || start_x < 0 || start_y < 0 || width <= 0 || height <= 0 ||
@@ -228,7 +228,7 @@ mlx_image_t* cut_texture(mlx_t* mlx, mlx_texture_t* texture, int line_x, int lin
         }
         i++;
     }
-
+    mlx_resize_image(image, size_x, size_y);
     return image;
 }
 
@@ -245,9 +245,7 @@ int main(void)
 	mlx_loop_hook(mlx, &hook, mlx);
     display_map(mlx, map);
 
-    mlx_image_t* imge = cut_texture(mlx, mlx_load_png("./Chest.png"), 7, 1, 16, 16);
-    mlx_resize_image(imge, 50, 50);
-    mlx_image_to_window(mlx, imge, 150, 150);
+    mlx_image_to_window(mlx, cut_texture(mlx, mlx_load_png("./Chest.png"), 1, 1, 16, 16, 100, 100), 150, 150);
 
 
     mlx_resize_image(img, 50, 50);
