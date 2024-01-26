@@ -292,6 +292,35 @@ void display_map(mlx_t* mlx, t_map_info map)
     }
 }
 
+
+int heart_frame = 0;
+#include <time.h> 
+void ui_auto_refresh(void *param)
+{
+    static clock_t start_time = 0;
+    static const int FPS = 10; // 10 FPS
+    static const int FRAME_DURATION = CLOCKS_PER_SEC / FPS;
+
+    mlx_t *mlx = (mlx_t *)param;
+    clock_t current_time = clock();
+
+    if ((current_time - start_time) >= FRAME_DURATION) {
+        start_time = current_time;
+        mlx_image_to_window(mlx, cut_tiles(mlx, mlx_load_png("./assets/UI/hearth.png"), heart_frame, 0, 18, 14, 72, 56), 105, 94);
+        mlx_image_to_window(mlx, cut_tiles(mlx, mlx_load_png("./assets/UI/hearth.png"), heart_frame, 0, 18, 14, 72, 56), 148, 94);
+        mlx_image_to_window(mlx, cut_tiles(mlx, mlx_load_png("./assets/UI/hearth.png"), heart_frame, 0, 18, 14, 72, 56), 192, 94);
+        heart_frame = (heart_frame + 1) % 8;
+
+    }
+}
+
+void    ui(mlx_t *mlx)
+{
+    mlx_loop_hook(mlx, &ui_auto_refresh, mlx);
+    mlx_image_to_window(mlx, cut_tiles(mlx, mlx_load_png("./assets/UI/live_bar.png"), 0, 0, 66, 34, 264, 128), 60, 58);
+    
+}
+
 int main(void)
 {
 	t_map_info  map;
@@ -304,9 +333,8 @@ int main(void)
 	mlx_loop_hook(mlx, &hook, mlx);
     display_map(mlx, map);
 
+    ui(mlx);
     mlx_image_to_window(mlx, cut_tiles(mlx, mlx_load_png("./Chest.png"), 1, 1, 16, 16, 100, 100), 150, 150);
-
-
     mlx_resize_image(img, 50, 50);
     mlx_image_to_window(mlx, img, 160, 160);
 	mlx_loop(mlx);
