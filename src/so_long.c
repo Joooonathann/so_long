@@ -148,35 +148,6 @@ mlx_image_t *get_last_object()
     return (current->sprite);
 }
 
-void display_map(mlx_t* mlx, t_map_info map)
-{
-    int a, b, z, p;
-    a = 0;
-    p = 0;
-    while (a < map.y)
-    {
-        b = 0;
-        z = 0;
-        while (map.map[a][b])
-        {
-            if (map.map[a][b] == '1')
-            {
-                create_object(1, mlx_texture_to_image(mlx, mlx_load_png("./mur.png")), 1);
-                mlx_image_to_window(mlx, get_last_object(), z, p);
-            }
-            else if (map.map[a][b] == 'C')
-            {
-                create_object(1, mlx_texture_to_image(mlx, mlx_load_png("./egg.png")), 2);
-                mlx_image_to_window(mlx, get_last_object(), z, p);
-            }
-            z += 100;
-            b++;
-        }
-        p += 100;
-        a++;
-    }
-}
-
 void	ft_lstclear(t_object *lst)
 {
 	t_object	*current;
@@ -202,7 +173,7 @@ void custom_memmove(uint8_t *dest, const uint8_t *src, size_t n) {
     }
 }
 
-mlx_image_t* cut_texture(mlx_t* mlx, mlx_texture_t* texture, int line_x, int line_y, int width, int height, int size_x, int size_y) {
+mlx_image_t* cut_tiles(mlx_t* mlx, mlx_texture_t* texture, int line_x, int line_y, int width, int height, int size_x, int size_y) {
     int start_x = line_x * width;
     int start_y = line_y * height;
     if (!mlx || !texture || start_x < 0 || start_y < 0 || width <= 0 || height <= 0 ||
@@ -228,10 +199,39 @@ mlx_image_t* cut_texture(mlx_t* mlx, mlx_texture_t* texture, int line_x, int lin
         }
         i++;
     }
-    mlx_resize_image(image, size_x, size_y);
+    if (size_x != 0 || size_y != 0)
+        mlx_resize_image(image, size_x, size_y);
     return image;
 }
 
+void display_map(mlx_t* mlx, t_map_info map)
+{
+    int a, b, z, p;
+    a = 0;
+    p = 0;
+    while (a < map.y)
+    {
+        b = 0;
+        z = 0;
+        while (map.map[a][b])
+        {
+            if (map.map[a][b] == '1')
+            {
+                create_object(1, cut_tiles(mlx, mlx_load_png("./mur.png"), 0, 0, 100, 100, 50, 50), 1);
+                mlx_image_to_window(mlx, get_last_object(), z, p);
+            }
+            else if (map.map[a][b] == 'C')
+            {
+                create_object(1, mlx_texture_to_image(mlx, mlx_load_png("./egg.png")), 2);
+                mlx_image_to_window(mlx, get_last_object(), z, p);
+            }
+            z += 100;
+            b++;
+        }
+        p += 100;
+        a++;
+    }
+}
 
 int main(void)
 {
@@ -245,7 +245,7 @@ int main(void)
 	mlx_loop_hook(mlx, &hook, mlx);
     display_map(mlx, map);
 
-    mlx_image_to_window(mlx, cut_texture(mlx, mlx_load_png("./Chest.png"), 1, 1, 16, 16, 100, 100), 150, 150);
+    mlx_image_to_window(mlx, cut_tiles(mlx, mlx_load_png("./Chest.png"), 1, 1, 16, 16, 100, 100), 150, 150);
 
 
     mlx_resize_image(img, 50, 50);
