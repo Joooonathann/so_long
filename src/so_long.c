@@ -112,7 +112,7 @@ int take_item(int new_x, int new_y)
 // Déclarer des variables globales pour suivre l'état du saut et du sol
 bool is_jumping = false;
 bool is_on_ground = true;
-
+int dash = 0;
 int idle_frame = 0;
 int run_frame = 0;
 int run_back = 0;
@@ -219,7 +219,26 @@ void hook(void *param)
             mlx_delete_image(param, img);
             img = cut_tiles(param, mlx_load_png("./assets/run.png"), run_frame, 0, 78, 45, 234, 135);
             mlx_image_to_window(param, img, u, i);
-            run_frame = (run_frame + 1) % 8;
+            run_frame = (run_frame + 1) % 4;
+
+        }
+        printf("Moving RIGHT\n");
+    }
+    if (mlx_is_key_down(param, MLX_KEY_SPACE) && !collision_check(new_x + 50, new_y))
+    {
+        run_back = 0;
+        idle_frame = 0;
+        run_back = 0;
+        new_x += 50;
+        if ((current_time - start_time) >= FRAME_DURATION && is_on_ground && !is_jumping) {
+            start_time = current_time;
+            int u, i;
+            u = img->instances[0].x;
+            i = img->instances[0].y;
+            mlx_delete_image(param, img);
+            img = cut_tiles(param, mlx_load_png("./assets/dash.png"), dash, 0, 78, 45, 234, 135);
+            mlx_image_to_window(param, img, u, i);
+            dash = (dash + 1) % 8;
 
         }
         printf("Moving RIGHT\n");
