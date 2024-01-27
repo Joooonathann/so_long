@@ -18,6 +18,17 @@ typedef struct map_info
 	int     collectible_count;
 }   t_map_info;
 
+typedef struct texture_info
+{
+	int	line_x;
+	int	line_y;
+	int	width;
+	int	height;
+	int	start_x;
+	int	start_y;
+}	t_texture_info;
+
+
 t_map_info	get_array_map(const char *path_map);
 void        destroy_map(t_map_info map);
 int         get_size_map(const char *path_map, t_map_info *map);
