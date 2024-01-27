@@ -1,12 +1,12 @@
 #include "so_long.h"
 
-void    set_object_map(const char *path_map, t_map_info *map)
+void	set_object_map(const char *path_map, t_map_info *map)
 {
-	int     fd;
-	int     read_on;
-	char    buff;
-	int     a;
-	int     b;
+	int		fd;
+	int		read_on;
+	char	buff;
+	int		a;
+	int		b;
 
 	a = 0;
 	b = 0;

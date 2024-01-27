@@ -1,8 +1,8 @@
 #include "so_long.h"
 
-t_map_info  initialize_map()
+t_map_info	initialize_map(void)
 {
-	t_map_info  map;
+	t_map_info	map;
 
 	map.x = 0;
 	map.y = 1;

@@ -1,7 +1,7 @@
 #include "so_long.h"
 #include <stdio.h>
 
-void    errors_controller(int error_code, t_map_info *map)
+void	errors_controller(int error_code, t_map_info *map)
 {
 	if (error_code == 1)
 		printf("Error\nLe fichier n'est pas valide.\n");

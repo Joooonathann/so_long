@@ -1,8 +1,8 @@
 #include "so_long.h"
 
-void    destroy_map(t_map_info map)
+void	destroy_map(t_map_info map)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < map.y)

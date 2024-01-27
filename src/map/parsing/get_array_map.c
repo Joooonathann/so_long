@@ -1,8 +1,8 @@
 #include "so_long.h"
 
-t_map_info  get_array_map(const char *path_map)
+t_map_info	get_array_map(const char *path_map)
 {
-	t_map_info  map;
+	t_map_info	map;
 
 	map = initialize_map();
 	if (!is_valid_path(path_map))

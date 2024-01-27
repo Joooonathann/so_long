@@ -1,9 +1,9 @@
 #include "so_long.h"
 
-int wall_surround_map(t_map_info *map)
+int	wall_surround_map(t_map_info *map)
 {
-	int i;
-	int a;
+	int	i;
+	int	a;
 
 	i = 0;
 	a = 0;

@@ -1,6 +1,6 @@
 #include "so_long.h"
 
-static int    ft_strchr(const char *str, int c)
+static int	ft_strchr(const char *str, int c)
 {
 	while (*str != '\0')
 	{
@@ -10,14 +10,13 @@ static int    ft_strchr(const char *str, int c)
 	}
 	if (*str == (char)c)
 		return (1);
-
 	return (0);
 }
 
-int is_valid_object_map(t_map_info *map)
+int	is_valid_object_map(t_map_info *map)
 {
-	int i;
-	int a;
+	int	i;
+	int	a;
 
 	a = 0;
 	i = 0;
@@ -27,7 +26,7 @@ int is_valid_object_map(t_map_info *map)
 		{
 			i++;
 			a = 0;
-			continue;
+			continue ;
 		}
 		if (!ft_strchr("01CEP5", map->map[i][a]))
 			return (0);
@@ -39,7 +38,8 @@ int is_valid_object_map(t_map_info *map)
 			map->collectible_count++;
 		a++;
 	}
-	if (map->collectible_count <= 0 || map->spawn_count != 1 || map->exit_count != 1)
+	if (map->collectible_count <= 0 || map->spawn_count != 1
+		|| map->exit_count != 1)
 		return (0);
 	return (1);
 }

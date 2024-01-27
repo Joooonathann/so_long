@@ -440,9 +440,8 @@ int main(void)
 {
 	t_map_info  map;
 
-	map = get_array_map("./map.ber");
+	map = get_array_map("./maps/map.ber");
 	mlx_t* mlx = mlx_init(64 * map.x, 64 * map.y, "Test", true);
-	mlx_texture_t* texture = mlx_load_png("./player.png");
 	img = cut_tiles(mlx, mlx_load_png("./assets/idle.png"), 0, 0, 78, 45, 234, 135);
 
 	mlx_loop_hook(mlx, &hook, mlx);
@@ -462,7 +461,6 @@ int main(void)
         objs = objs->next;
     }
     ft_lstclear(objs);
-	mlx_delete_texture(texture);
 	mlx_terminate(mlx);
 	return (0);
 }

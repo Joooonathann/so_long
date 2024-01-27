@@ -1,8 +1,8 @@
 #include "so_long.h"
 
-int    set_malloc_map(t_map_info *map)
+int	set_malloc_map(t_map_info *map)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	map->map = (char **)malloc(sizeof(char *) * map->y);

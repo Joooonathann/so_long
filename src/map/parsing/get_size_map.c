@@ -1,11 +1,11 @@
 #include "so_long.h"
 
-static int get_size_primary(int fd)
+static int	get_size_primary(int fd)
 {
-	int     x;
-	int     read_on;
-	char    buff;
-	
+	int		x;
+	int		read_on;
+	char	buff;
+
 	buff = ' ';
 	x = 0;
 	read_on = 1;
@@ -18,12 +18,12 @@ static int get_size_primary(int fd)
 	return (x);
 }
 
-int get_size_map(const char *path_map, t_map_info *map)
+int	get_size_map(const char *path_map, t_map_info *map)
 {
-	int     fd;
-	int     read_on;
-	int     x_tmp;
-	char    buff;
+	int		fd;
+	int		read_on;
+	int		x_tmp;
+	char	buff;
 
 	x_tmp = 0;
 	fd = open(path_map, O_RDONLY);
