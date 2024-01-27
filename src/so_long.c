@@ -165,7 +165,7 @@ void hook(void *param)
         c = img->instances[0].x;
         v = img->instances[0].y;
         mlx_delete_image(param, img);
-        img = cut_tiles(param, mlx_load_png("./assets/jump.png"), idle_frame, 0, 78, 45, 234, 135);
+        img = cut_tiles(param, mlx_load_png("./assets/characters/king/jump.png"), idle_frame, 0, 78, 45, 234, 135);
         mlx_image_to_window(param, img, c, v);
         new_y += jump_velocity * 1.5;
         jump_velocity += gravity;
@@ -175,7 +175,7 @@ void hook(void *param)
              c = img->instances[0].x;
             v = img->instances[0].y;
             mlx_delete_image(param, img);
-            img = cut_tiles(param, mlx_load_png("./assets/fall.png"), idle_frame, 0, 78, 45, 234, 135);
+            img = cut_tiles(param, mlx_load_png("./assets/characters/king/fall.png"), idle_frame, 0, 78, 45, 234, 135);
             mlx_image_to_window(param, img, c, v);
             is_jumping = false;
             jump_velocity = -15.0; // Réinitialiser la vitesse de saut pour le prochain saut
@@ -199,7 +199,7 @@ void hook(void *param)
             u = img->instances[0].x;
             i = img->instances[0].y;
             mlx_delete_image(param, img);
-            img = cut_tiles(param, mlx_load_png("./assets/run_back.png"), run_back, 0, 78, 45, 234, 135);
+            img = cut_tiles(param, mlx_load_png("./assets/characters/king/run_back.png"), run_back, 0, 78, 45, 234, 135);
             mlx_image_to_window(param, img, u, i);
             run_back = (run_back + 1) % 8;
 
@@ -217,7 +217,7 @@ void hook(void *param)
             u = img->instances[0].x;
             i = img->instances[0].y;
             mlx_delete_image(param, img);
-            img = cut_tiles(param, mlx_load_png("./assets/run.png"), run_frame, 0, 78, 45, 234, 135);
+            img = cut_tiles(param, mlx_load_png("./assets/characters/king/run.png"), run_frame, 0, 78, 45, 234, 135);
             mlx_image_to_window(param, img, u, i);
             run_frame = (run_frame + 1) % 4;
 
@@ -236,7 +236,7 @@ void hook(void *param)
             u = img->instances[0].x;
             i = img->instances[0].y;
             mlx_delete_image(param, img);
-            img = cut_tiles(param, mlx_load_png("./assets/dash.png"), dash, 0, 78, 45, 234, 135);
+            img = cut_tiles(param, mlx_load_png("./assets/characters/king/dash.png"), dash, 0, 78, 45, 234, 135);
             mlx_image_to_window(param, img, u, i);
             dash = (dash + 1) % 8;
 
@@ -255,7 +255,7 @@ void hook(void *param)
             u = img->instances[0].x;
             i = img->instances[0].y;
             mlx_delete_image(param, img);
-            img = cut_tiles(param, mlx_load_png("./assets/idle.png"), idle_frame, 0, 78, 45, 234, 135);
+            img = cut_tiles(param, mlx_load_png("./assets/characters/king/idle.png"), idle_frame, 0, 78, 45, 234, 135);
             mlx_image_to_window(param, img, u, i);
             idle_frame = (idle_frame + 1) % 10;
 
@@ -442,7 +442,7 @@ int main(void)
 
 	map = get_array_map("./maps/map.ber");
 	mlx_t* mlx = mlx_init(64 * map.x, 64 * map.y, "Test", true);
-	img = cut_tiles(mlx, mlx_load_png("./assets/idle.png"), 0, 0, 78, 45, 234, 135);
+	img = cut_tiles(mlx, mlx_load_png("./assets/characters/king/idle.png"), 0, 0, 78, 45, 234, 135);
 
 	mlx_loop_hook(mlx, &hook, mlx);
     display_map(mlx, map);
