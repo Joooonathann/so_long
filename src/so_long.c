@@ -246,17 +246,17 @@ void hook(void *param)
     }
     if (mlx_is_key_down(param, MLX_KEY_LEFT) && !collision_check(new_x - 5, new_y))
     {
+        direction = 0;
         run_frame = 0;
         idle_frame = 0;
         new_x -= 5;
-        direction = 0;
         if ((current_time - start_time) >= FRAME_DURATION && is_on_ground && !is_jumping) {
             start_time = current_time;
             int u, i;
             u = img->instances[0].x;
             i = img->instances[0].y;
             mlx_delete_image(param, img);
-            img = set_texture_to_image(mlx, mlx_load_png("./assets/characters/king/run_back.png"), create_texture_info(run_frame, 0, 37, 29), 3);
+            img = set_texture_to_image(mlx, mlx_load_png("./assets/characters/king/run_back.png"), create_texture_info(run_back, 0, 37, 29), 3);
             mlx_image_to_window(param, img, u, i);
             run_back = (run_back + 1) % 8;
 
@@ -277,7 +277,7 @@ void hook(void *param)
             mlx_delete_image(param, img);
             img = set_texture_to_image(mlx, mlx_load_png("./assets/characters/king/run.png"), create_texture_info(run_frame, 0, 37, 29), 3);
             mlx_image_to_window(param, img, u, i);
-            run_frame = (run_frame + 1) % 4;
+            run_frame = (run_frame + 1) % 8;
 
         }
         printf("Moving RIGHT\n");
