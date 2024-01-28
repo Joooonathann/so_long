@@ -173,6 +173,7 @@ int dash = 0;
 int idle_frame = 0;
 int run_frame = 0;
 int run_back = 0;
+int direction = 1;
 void hook(void *param)
 {
     static clock_t start_time = 0;
@@ -222,18 +223,16 @@ void hook(void *param)
         c = img->instances[0].x;
         v = img->instances[0].y;
         mlx_delete_image(param, img);
-        img = cut_tiles(param, mlx_load_png("./assets/characters/king/jump.png"), idle_frame, 0, 78, 45, 234, 135);
+        if (direction == 1)
+            img = set_texture_to_image(mlx, mlx_load_png("./assets/characters/king/jump.png"), create_texture_info(run_frame, 0, 37, 29), 3);
+        else
+            img = set_texture_to_image(mlx, mlx_load_png("./assets/characters/king/jump_back.png"), create_texture_info(run_frame, 0, 37, 29), 3);
         mlx_image_to_window(param, img, c, v);
         new_y += jump_velocity * 1.5;
         jump_velocity += gravity;
 
         // Vérifier si le personnage a atteint la hauteur maximale du saut
         if (jump_velocity >= 0.0 || fabs(new_y - img->instances[0].y) >= max_jump_height) {
-             c = img->instances[0].x;
-            v = img->instances[0].y;
-            mlx_delete_image(param, img);
-            img = cut_tiles(param, mlx_load_png("./assets/characters/king/fall.png"), idle_frame, 0, 78, 45, 234, 135);
-            mlx_image_to_window(param, img, c, v);
             is_jumping = false;
             jump_velocity = -15.0; // Réinitialiser la vitesse de saut pour le prochain saut
         }
@@ -250,13 +249,14 @@ void hook(void *param)
         run_frame = 0;
         idle_frame = 0;
         new_x -= 5;
+        direction = 0;
         if ((current_time - start_time) >= FRAME_DURATION && is_on_ground && !is_jumping) {
             start_time = current_time;
             int u, i;
             u = img->instances[0].x;
             i = img->instances[0].y;
             mlx_delete_image(param, img);
-            img = cut_tiles(param, mlx_load_png("./assets/characters/king/run_back.png"), run_back, 0, 78, 45, 234, 135);
+            img = set_texture_to_image(mlx, mlx_load_png("./assets/characters/king/run_back.png"), create_texture_info(run_frame, 0, 37, 29), 3);
             mlx_image_to_window(param, img, u, i);
             run_back = (run_back + 1) % 8;
 
@@ -265,6 +265,7 @@ void hook(void *param)
     }
     if (mlx_is_key_down(param, MLX_KEY_RIGHT) && !collision_check(new_x + 5, new_y))
     {
+        direction = 1;
         run_back = 0;
         idle_frame = 0;
         new_x += 5;
@@ -274,7 +275,7 @@ void hook(void *param)
             u = img->instances[0].x;
             i = img->instances[0].y;
             mlx_delete_image(param, img);
-            img = cut_tiles(param, mlx_load_png("./assets/characters/king/run.png"), run_frame, 0, 78, 45, 234, 135);
+            img = set_texture_to_image(mlx, mlx_load_png("./assets/characters/king/run.png"), create_texture_info(run_frame, 0, 37, 29), 3);
             mlx_image_to_window(param, img, u, i);
             run_frame = (run_frame + 1) % 4;
 
@@ -312,7 +313,10 @@ void hook(void *param)
             u = img->instances[0].x;
             i = img->instances[0].y;
             mlx_delete_image(param, img);
-            img = cut_tiles(param, mlx_load_png("./assets/characters/king/idle.png"), idle_frame, 0, 78, 45, 234, 135);
+            if (direction == 1)
+                img = set_texture_to_image(mlx, mlx_load_png("./assets/characters/king/idle.png"), create_texture_info(idle_frame, 0, 37, 29), 3);
+            else
+                img = set_texture_to_image(mlx, mlx_load_png("./assets/characters/king/idle_back.png"), create_texture_info(idle_frame, 0, 37, 29), 3);
             mlx_image_to_window(param, img, u, i);
             idle_frame = (idle_frame + 1) % 10;
 
@@ -499,7 +503,7 @@ int main(void)
 
 	map = get_array_map("./maps/map.ber");
 	mlx_t* mlx = mlx_init(64 * map.x, 64 * map.y, "Test", true);
-	img = set_texture_to_image(mlx, mlx_load_png("./assets/characters/king/idle.png"), create_texture_info(0, 0, 78, 45), 10);
+	img = set_texture_to_image(mlx, mlx_load_png("./assets/characters/king/idle.png"), create_texture_info(0, 0, 37, 29), 3);
 
 	mlx_loop_hook(mlx, &hook, mlx);
     display_map(mlx, map);

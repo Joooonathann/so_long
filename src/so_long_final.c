@@ -1,5 +1,10 @@
 #include "so_long.h"
 
+void	create_player(mlx_t *mlx)
+{
+	
+}
+
 int32_t main(void)
 {
 	mlx_t* mlx = mlx_init(1000, 500, "42Balls", true);
