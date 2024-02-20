@@ -42,4 +42,6 @@ int         is_valid_path(const char *path_map);
 void    errors_controller(int error_code, t_map_info *map);
 int  	ft_strlen(const char *str);
 int		ft_strcmp(const char *s1, const char *s2);
+void    create_game(void);
+
 #endif

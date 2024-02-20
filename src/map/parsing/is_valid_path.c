@@ -1,6 +1,6 @@
 #include "so_long.h"
 
-int	has_ber_extension(const char *filename)
+static int	has_ber_extension(const char *filename)
 {
 	int	len;
 

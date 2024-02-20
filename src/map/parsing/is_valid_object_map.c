@@ -28,7 +28,7 @@ int	is_valid_object_map(t_map_info *map)
 			a = 0;
 			continue ;
 		}
-		if (!ft_strchr("01CEP5", map->map[i][a]))
+		if (!ft_strchr("01CEP", map->map[i][a]))
 			return (0);
 		if (map->map[i][a] == 'E')
 			map->exit_count++;
