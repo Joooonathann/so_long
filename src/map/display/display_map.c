@@ -4,8 +4,6 @@ void    display_map(mlx_t* mlx, t_map_info map)
 {
     int a;
     int b;
-    int c;
-    int d;
 
     a = 0;
     while (a < map.y)
@@ -29,6 +27,7 @@ void    display_map(mlx_t* mlx, t_map_info map)
             {
                 
             }
+            b++;
         }
         a++;
     }
