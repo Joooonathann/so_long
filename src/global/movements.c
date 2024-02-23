@@ -7,5 +7,4 @@ void movements_hook(void *param)
     t_global *params = (t_global *)param;
     
     mlx = params->mlx;
-    a = params->a;
 }

@@ -21,7 +21,7 @@ typedef struct s_map_info
 struct s_global_game
 {
 	mlx_t *mlx;
-	int a;
+	t_map_info map;
 } typedef t_global;
 
 
@@ -35,11 +35,12 @@ void        set_object_map(const char *path_map, t_map_info *map);
 int         wall_surround_map(t_map_info *map);
 int         flood_fill_map(t_map_info map);
 int         is_valid_path(const char *path_map);
-void    errors_controller(int error_code, t_map_info *map);
+void	errors_controller(char *str, t_map_info *map);
 int  	ft_strlen(const char *str);
 int		ft_strcmp(const char *s1, const char *s2);
 void    create_game(void);
-void    display_map(mlx_t* mlx, t_map_info map);
+void    display_map(t_global game);
 void	movements_hook(void *param);
+t_global	init_global(mlx_t **mlx, t_map_info *map);
 
 #endif

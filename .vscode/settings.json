@@ -8,6 +8,9 @@
         "ranges": "c",
         "span": "c",
         "random": "c",
-        "fcntl.h": "c"
-    }
+        "fcntl.h": "c",
+        "system_error": "c",
+        "stdio.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }
