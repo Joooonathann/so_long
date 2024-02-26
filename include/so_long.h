@@ -18,12 +18,18 @@ typedef struct s_map_info
 	int     collectible_count;
 }   t_map_info;
 
-struct s_global_game
+typedef struct s_global_game
 {
 	mlx_t *mlx;
 	t_map_info map;
-} typedef t_global;
+}	t_global;
 
+typedef struct s_items_map
+{
+	int type;
+	mlx_image_t *sprite;
+	struct s_items_map *next;
+}	t_items_map;
 
 t_map_info	get_array_map(const char *path_map);
 void        destroy_map(t_map_info map);
