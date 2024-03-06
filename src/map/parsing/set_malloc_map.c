@@ -13,7 +13,7 @@ int	set_malloc_map(t_map_info *map)
 		map->map[i] = malloc(sizeof(char) * (map->x + 1));
 		if (!map->map[i])
 		{
-			destroy_map(*map);
+			destroy_map(map);
 			return (0);
 		}
 		i++;
