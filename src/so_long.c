@@ -4,6 +4,7 @@ typedef struct s_collisions
 {
 	mlx_image_t	*sprite;
 	int	type;
+	int	is_collected;
 	struct s_collisions *next;
 }	t_collisions;
 
@@ -37,6 +38,7 @@ void add_stock(t_collisions **stock, mlx_image_t *sprite, int type)
 
     new_collision->sprite = sprite;
     new_collision->type = type;
+	new_collision->is_collected = 0;
     new_collision->next = *stock;
     *stock = new_collision;
 }
@@ -58,14 +60,14 @@ static	int	check_collision(int y, int x, t_game *param)
 		{
 			if (temp->type == 1)
 				return (0);
-			if (temp->type == 2)
+			if (temp->type == 2 && temp->is_collected == 0)
 			{
+				temp->is_collected = 1;
 				temp->sprite->instances[0].enabled = false;
-				mlx_delete_image(param->mlx, temp->sprite);
 				param->collect++;
 				return (1);
 			}
-			if (temp->type == 3)
+			if (temp->type == 3 && param->collect == param->map.collectible_count)
 			{
 				mlx_close_window(param->mlx);
 				return (1);
@@ -159,7 +161,7 @@ void	hook(void *param)
 	t_collisions *current;
 	int	x;
 	int y;
-	
+
 	y = params->player->instances[0].y;
 	x = params->player->instances[0].x;
 	if (mlx_is_key_down(params->mlx, MLX_KEY_D) && check_collision(y, x + 8, params))
