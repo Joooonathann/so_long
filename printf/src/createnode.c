@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   createt_node.c                                       :+:      :+:    :+: */
+/*   create_node.c                                       :+:      :+:    :+: */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jalbiser <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "ft_printf.h"
 
-t_node	*createt_node(char data, t_node *stock)
+t_node	*create_node(char data, t_node *stock)
 {
 	t_node	*new;
 	t_node	*current;

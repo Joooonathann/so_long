@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalbiser <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 13:27:23 by jalbiser          #+#    #+#             */
-/*   Updated: 2023/12/01 05:23:12 by jalbiser         ###   ########.fr       */
+/*   Updated: 2024/04/30 10:35:42 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#ifndef FT_PRINTF_H
+
 # define FT_PRINTF_H
 
 # include <unistd.h>
@@ -29,7 +29,7 @@ typedef enum types
 }	t_type;
 
 int		ft_printf(const char *format, ...);
-t_node	*createt_node(char data, t_node *stock);
+t_node	*create_node(char data, t_node *stock);
 t_node	*ft_convert(unsigned int n, t_node *stock, t_type t_type);
 t_node	*ft_flags(char c, t_node *stock, va_list args);
 int		ft_printchar(int data);

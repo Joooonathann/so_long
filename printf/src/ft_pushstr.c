@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pushstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalbiser <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:18:40 by jalbiser          #+#    #+#             */
-/*   Updated: 2023/12/06 10:20:40 by jalbiser         ###   ########.fr       */
+/*   Updated: 2024/04/30 10:35:42 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "ft_printf.h"
+
 
 t_node	*ft_pushstr(char *str, t_node *stock)
 {
@@ -20,7 +20,7 @@ t_node	*ft_pushstr(char *str, t_node *stock)
 	}
 	while (*str)
 	{
-		stock = createt_node(*str, stock);
+		stock = create_node(*str, stock);
 		str++;
 	}
 	return (stock);
