@@ -2,7 +2,6 @@
 # define SO_LONG_H
 
 # include "../MLX42/include/MLX42/MLX42.h"
-# include "../printf/include/ft_printf.h"
 # include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
