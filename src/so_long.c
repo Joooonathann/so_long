@@ -212,7 +212,8 @@ void	movement(t_game *game, int nx, int ny)
 	}
 	if ((*game).map->map[y + ny][x + nx] != '1')
 	{
-		if ((*game).map->collectible_count != 0 && (*game).map->map[y + ny][x + nx] == 'E')
+		if ((*game).map->collectible_count != 0 &&
+		(*game).map->map[y + ny][x + nx] == 'E')
 			return ;
 		swap_chars(&(*game).map->map[y][x], &(*game).map->map[y + ny][x + nx]);
 		mlx_delete_image((*game).mlx, (*game).player);
@@ -240,6 +241,20 @@ void	hook(mlx_key_data_t keydata, void *param)
 		mlx_close_window((*game).mlx);
 }
 
+void	delete_all_images(t_game *game)
+{
+	mlx_delete_texture((*game).background_texture);
+	mlx_delete_image((*game).mlx, (*game).background);
+	mlx_delete_texture((*game).player_texture);
+	mlx_delete_image((*game).mlx, (*game).player);
+	mlx_delete_texture((*game).wall_texture);
+	mlx_delete_image((*game).mlx, (*game).wall);
+	mlx_delete_texture((*game).exit_texture);
+	mlx_delete_image((*game).mlx, (*game).exit);
+	mlx_delete_texture((*game).collectible_texture);
+	mlx_delete_image((*game).mlx, (*game).collectible);
+}
+
 int64_t	main(int argc, char **argv)
 {
 	t_map_info map;
@@ -252,6 +267,7 @@ int64_t	main(int argc, char **argv)
 	spawn_player(&game, &map);
 	mlx_key_hook(game.mlx, hook, (void *)&game);
 	mlx_loop(game.mlx);
+	delete_all_images(&game);
 	mlx_terminate(game.mlx);
 	destroy_map(&map);
 	return (EXIT_SUCCESS);
