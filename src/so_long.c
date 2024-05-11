@@ -3,6 +3,8 @@
 typedef struct s_game
 {
 	int				direction;
+	int				x_e;
+	int				y_e;
 	mlx_t			*mlx;
 	mlx_texture_t	*player_texture;
 	mlx_image_t		*player;
@@ -101,6 +103,8 @@ void	draw_map(t_game *game, t_map_info *map)
 						* 128) < 0)
 					errors_controller("Erreur lors de l'affichage des images\n",
 						map);
+				(*game).x_e = x;
+				(*game).y_e = y;
 			}
 			x++;
 		}
@@ -208,23 +212,14 @@ void	movement(t_game *game, int nx, int ny)
 		(*game).map->map[y + ny][x + nx] = '0';
 		(*game).map->collectible_count--;
 	}
-	if ((*game).map->map[y + ny][x + nx] == 'E' && (*game).map->collectible_count == 0)
-	{
-		mlx_delete_image((*game).mlx, (*game).player);
-		react_player(game, (*game).map);
-		if (mlx_image_to_window((*game).mlx, (*game).player, (x + nx) * 128, (y + ny) * 128) < 0)
-			errors_controller("Erreur lors de l'affichage des images\n", (*game).map);
+	if ((y + ny) == (*game).y_e && (x + nx) == (*game).x_e && (*game).map->collectible_count == 0)
 		mlx_close_window((*game).mlx);
-	}
 	if ((*game).map->map[y + ny][x + nx] != '1')
 	{
-		if ((*game).map->map[y + ny][x + nx] == '0')
-		{
-			swap_chars(&(*game).map->map[y][x], &(*game).map->map[y + ny][x + nx]);
-			mlx_delete_image((*game).mlx, (*game).player);
-			react_player(game, (*game).map);
-			spawn_player(game, (*game).map);
-		}
+		swap_chars(&(*game).map->map[y][x], &(*game).map->map[y + ny][x + nx]);
+		mlx_delete_image((*game).mlx, (*game).player);
+		react_player(game, (*game).map);
+		spawn_player(game, (*game).map);
 	}
 }
 
