@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   is_valid_object_map.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/13 10:39:22 by jalbiser          #+#    #+#             */
+/*   Updated: 2024/05/13 10:41:57 by jalbiser         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long.h"
 
 static int	ft_strchr(const char *str, int c)
@@ -11,6 +23,16 @@ static int	ft_strchr(const char *str, int c)
 	if (*str == (char)c)
 		return (1);
 	return (0);
+}
+
+void	add_count(t_map_info *map, int i, int a)
+{
+	if (map->map[i][a] == 'E')
+		map->exit_count++;
+	if (map->map[i][a] == 'P')
+		map->spawn_count++;
+	if (map->map[i][a] == 'C')
+		map->collectible_count++;
 }
 
 int	is_valid_object_map(t_map_info *map)
@@ -30,12 +52,7 @@ int	is_valid_object_map(t_map_info *map)
 		}
 		if (!ft_strchr("01CEP", map->map[i][a]))
 			return (0);
-		if (map->map[i][a] == 'E')
-			map->exit_count++;
-		if (map->map[i][a] == 'P')
-			map->spawn_count++;
-		if (map->map[i][a] == 'C')
-			map->collectible_count++;
+		add_count(map, i, a);
 		a++;
 	}
 	if (map->collectible_count <= 0 || map->spawn_count != 1

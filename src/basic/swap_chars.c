@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   initialize_map.c                                   :+:      :+:    :+:   */
+/*   swap_chars.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/13 10:39:19 by jalbiser          #+#    #+#             */
-/*   Updated: 2024/05/13 10:39:20 by jalbiser         ###   ########.fr       */
+/*   Created: 2024/05/13 10:27:52 by jalbiser          #+#    #+#             */
+/*   Updated: 2024/05/13 10:27:59 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-t_map_info	initialize_map(void)
+void	swap_chars(char *a, char *b)
 {
-	t_map_info	map;
+	char	temp;
 
-	map.x = 0;
-	map.y = 1;
-	map.map = NULL;
-	map.is_valid = 1;
-	map.is_error = 0;
-	map.exit_count = 0;
-	map.spawn_count = 0;
-	map.collectible_count = 0;
-	return (map);
+	temp = *a;
+	*a = *b;
+	*b = temp;
 }

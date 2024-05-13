@@ -1,41 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wall_surround_map.c                                :+:      :+:    :+:   */
+/*   hook_mov.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/13 10:39:32 by jalbiser          #+#    #+#             */
-/*   Updated: 2024/05/13 10:39:33 by jalbiser         ###   ########.fr       */
+/*   Created: 2024/05/13 10:29:46 by jalbiser          #+#    #+#             */
+/*   Updated: 2024/05/13 10:30:48 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	wall_surround_map(t_map_info *map)
+static void	delay_hook(int s)
 {
-	int	i;
 	int	a;
+	int	b;
 
-	i = 0;
 	a = 0;
-	while (a < map->y)
+	while (a < s)
 	{
-		if (map->map[a][i] == '\0')
-		{
-			a++;
-			i = 0;
-		}
-		else if ((a == 0 || a == map->y - 1) && map->map[a][i] != '1')
-			return (0);
-		else if ((i == 0 || i == map->x - 1) && map->map[a][i] != '1')
-			return (0);
-		i++;
-		if (i == map->x)
-		{
-			i = 0;
-			a++;
-		}
+		b = 0;
+		while (b < 10000)
+			b++;
+		a++;
 	}
-	return (1);
+}
+
+void	hook_mov(void *param)
+{
+	t_game	*game;
+
+	game = (t_game *)param;
+	if ((*game).direction == 0)
+		movement(game, 1, 0);
+	else if ((*game).direction == 1)
+		movement(game, 0, -1);
+	else if ((*game).direction == 3)
+		movement(game, 0, 1);
+	else if ((*game).direction == 4)
+		movement(game, -1, 0);
+	delay_hook(3000);
 }
