@@ -1,21 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors_controller.c                                :+:      :+:    :+:   */
+/*   ft_pushstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jalbiser <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/13 10:38:45 by jalbiser          #+#    #+#             */
-/*   Updated: 2024/05/14 10:26:52 by jalbiser         ###   ########.fr       */
+/*   Created: 2023/12/06 10:18:40 by jalbiser          #+#    #+#             */
+/*   Updated: 2023/12/06 10:20:40 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "ft_printf.h"
 
-#include "so_long.h"
-
-void	errors_controller(char *str, t_map_info *map)
+t_node	*ft_pushstr(char *str, t_node *stock)
 {
-	ft_printf("%s", str);
-	if (map->map != NULL)
-		destroy_map(map);
-	exit(1);
+	if (!str)
+	{
+		stock = ft_pushstr("(null)", stock);
+		return (stock);
+	}
+	while (*str)
+	{
+		stock = createt_node(*str, stock);
+		str++;
+	}
+	return (stock);
 }

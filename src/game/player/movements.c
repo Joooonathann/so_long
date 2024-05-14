@@ -6,7 +6,7 @@
 /*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 10:28:32 by jalbiser          #+#    #+#             */
-/*   Updated: 2024/05/13 10:28:34 by jalbiser         ###   ########.fr       */
+/*   Updated: 2024/05/14 10:31:38 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ void	movement(t_game *game, int nx, int ny)
 		mlx_delete_image((*game).mlx, (*game).player);
 		react_player(game, (*game).map);
 		spawn_player(game, (*game).map);
+		(*game).movements_count++;
 	}
 }

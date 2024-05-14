@@ -6,7 +6,7 @@
 /*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 10:39:22 by jalbiser          #+#    #+#             */
-/*   Updated: 2024/05/13 10:41:57 by jalbiser         ###   ########.fr       */
+/*   Updated: 2024/05/14 07:46:46 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	ft_strchr(const char *str, int c)
 	return (0);
 }
 
-void	add_count(t_map_info *map, int i, int a)
+static void	add_count(t_map_info *map, int i, int a)
 {
 	if (map->map[i][a] == 'E')
 		map->exit_count++;

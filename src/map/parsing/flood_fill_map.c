@@ -6,13 +6,13 @@
 /*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 10:38:54 by jalbiser          #+#    #+#             */
-/*   Updated: 2024/05/13 10:39:04 by jalbiser         ###   ########.fr       */
+/*   Updated: 2024/05/14 10:17:57 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-t_map_info	mapdup(t_map_info map)
+static t_map_info	mapdup(t_map_info map)
 {
 	t_map_info	result_map;
 	int			y;
@@ -28,14 +28,17 @@ t_map_info	mapdup(t_map_info map)
 	{
 		x = 0;
 		while (map.map[y][x] != '\0')
-			result_map.map[y][x++] = map.map[y][x];
+		{
+			result_map.map[y][x] = map.map[y][x];
+			x++;
+		}
 		result_map.map[y][x] = '\0';
 		y++;
 	}
 	return (result_map);
 }
 
-void	flood_fill(t_map_info *map_tmp, int x, int y)
+static void	flood_fill(t_map_info *map_tmp, int x, int y)
 {
 	if (y < 0 || y >= map_tmp->y || x < 0 || x >= map_tmp->x)
 		return ;
@@ -52,7 +55,7 @@ void	flood_fill(t_map_info *map_tmp, int x, int y)
 	flood_fill(map_tmp, x, (y + 1));
 }
 
-int	spawn_info(t_map_info map, int direction)
+static int	spawn_info(t_map_info map, int direction)
 {
 	int	x;
 	int	y;

@@ -6,7 +6,7 @@
 /*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 10:31:00 by jalbiser          #+#    #+#             */
-/*   Updated: 2024/05/13 10:36:51 by jalbiser         ###   ########.fr       */
+/*   Updated: 2024/05/14 09:43:59 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int32_t	main(int argc, char **argv)
 {
-	t_map_info map;
-	t_game game;
+	t_map_info	map;
+	t_game		game;
 
 	if (argc != 2)
-		errors_controller("Usage: ./so_long <map>", &map);
+		errors_controller("Error\nUsage: ./so_long <map>\n", &map);
 	map = get_array_map(argv[1]);
 	init_game(&game, &map);
 	resize_game(&game, &map);

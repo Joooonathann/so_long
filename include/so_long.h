@@ -1,7 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   so_long.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/14 07:40:24 by jalbiser          #+#    #+#             */
+/*   Updated: 2024/05/14 10:30:49 by jalbiser         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
 # include "../MLX42/include/MLX42/MLX42.h"
+# include "../printf/include/ft_printf.h"
 # include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -23,6 +36,7 @@ typedef struct s_game
 	int				direction;
 	int				x_e;
 	int				y_e;
+	int				movements_count;
 	mlx_t			*mlx;
 	mlx_texture_t	*player_texture;
 	mlx_image_t		*player;

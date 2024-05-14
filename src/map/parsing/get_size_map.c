@@ -6,7 +6,7 @@
 /*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 10:39:13 by jalbiser          #+#    #+#             */
-/*   Updated: 2024/05/13 10:39:15 by jalbiser         ###   ########.fr       */
+/*   Updated: 2024/05/14 13:25:13 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,16 @@ static int	get_size_primary(int fd)
 	return (x);
 }
 
+static int	verif_length(int *fd, int x_tmp, int x)
+{
+	if (x_tmp != x)
+	{
+		close(*fd);
+		return (0);
+	}
+	return (1);
+}	
+
 int	get_size_map(const char *path_map, t_map_info *map)
 {
 	int		fd;
@@ -46,7 +56,7 @@ int	get_size_map(const char *path_map, t_map_info *map)
 		read_on = read(fd, &buff, 1);
 		if (buff == '\n' || read_on == 0)
 		{
-			if (x_tmp != map->x)
+			if (!verif_length(&fd, x_tmp, map->x))
 				return (0);
 			map->y++;
 			x_tmp = 0;
