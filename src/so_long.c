@@ -6,7 +6,7 @@
 /*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 10:31:00 by jalbiser          #+#    #+#             */
-/*   Updated: 2024/05/14 09:43:59 by jalbiser         ###   ########.fr       */
+/*   Updated: 2024/05/20 08:33:23 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int32_t	main(int argc, char **argv)
 		errors_controller("Error\nUsage: ./so_long <map>\n", &map);
 	map = get_array_map(argv[1]);
 	init_game(&game, &map);
-	resize_game(&game, &map);
+	resize_game(&game);
 	draw_map(&game, &map);
 	spawn_player(&game, &map);
 	mlx_key_hook(game.mlx, hook, (void *)&game);

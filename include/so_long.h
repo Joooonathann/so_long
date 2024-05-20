@@ -6,7 +6,7 @@
 /*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 07:40:24 by jalbiser          #+#    #+#             */
-/*   Updated: 2024/05/14 10:30:49 by jalbiser         ###   ########.fr       */
+/*   Updated: 2024/05/20 08:33:17 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,6 @@ void				delete_all_images(t_game *game);
 void				movement(t_game *game, int nx, int ny);
 int					pos(char c, t_game *game);
 void				react_player(t_game *game, t_map_info *map);
-void				resize_game(t_game *game, t_map_info *map);
+void				resize_game(t_game *game);
 
 #endif
