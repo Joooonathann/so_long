@@ -6,7 +6,7 @@
 /*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 10:21:16 by jalbiser          #+#    #+#             */
-/*   Updated: 2024/05/20 08:48:57 by jalbiser         ###   ########.fr       */
+/*   Updated: 2024/05/21 08:50:32 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,6 @@ static void	exit_clean(t_game *game, char *str)
 	exit(1);
 }
 
-static void	init_draw_second(t_game **game)
-{
-	(*game)->exit = mlx_texture_to_image((*game)->mlx, (*game)->exit_texture);
-	if (!(*game)->exit)
-		exit_clean(*game, "Erreur d'allocations MLX\n");
-	(*game)->wall_texture = mlx_load_png("./assets/wall.png");
-	if (!(*game)->wall_texture)
-		exit_clean(*game, "Erreur d'allocations mémoires\n");
-	(*game)->wall = mlx_texture_to_image((*game)->mlx, (*game)->wall_texture);
-	if (!(*game)->wall)
-		exit_clean(*game, "Erreur d'allocations MLX\n");
-}
-
 static void	init_draw(t_game **game)
 {
 	(*game)->collectible_texture = mlx_load_png("./assets/collectible.png");
@@ -47,7 +34,15 @@ static void	init_draw(t_game **game)
 	(*game)->exit_texture = mlx_load_png("./assets/exit.png");
 	if (!(*game)->exit_texture)
 		exit_clean(*game, "Erreur d'allocations mémoires\n");
-	init_draw_second(game);
+	(*game)->exit = mlx_texture_to_image((*game)->mlx, (*game)->exit_texture);
+	if (!(*game)->exit)
+		exit_clean(*game, "Erreur d'allocations MLX\n");
+	(*game)->wall_texture = mlx_load_png("./assets/wall.png");
+	if (!(*game)->wall_texture)
+		exit_clean(*game, "Erreur d'allocations mémoires\n");
+	(*game)->wall = mlx_texture_to_image((*game)->mlx, (*game)->wall_texture);
+	if (!(*game)->wall)
+		exit_clean(*game, "Erreur d'allocations MLX\n");
 }
 
 static void	init_second(t_game **game)
