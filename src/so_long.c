@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jalbiser <jalbiser@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 10:31:00 by jalbiser          #+#    #+#             */
-/*   Updated: 2024/05/20 08:33:23 by jalbiser         ###   ########.fr       */
+/*   Updated: 2024/05/21 18:22:42 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ int32_t	main(int argc, char **argv)
 	t_game		game;
 
 	if (argc != 2)
-		errors_controller("Error\nUsage: ./so_long <map>\n", &map);
+	{
+		ft_printf("Error\nUsage: ./so_long <map>\n");
+		exit(1);
+	}
 	map = get_array_map(argv[1]);
 	init_game(&game, &map);
 	resize_game(&game);

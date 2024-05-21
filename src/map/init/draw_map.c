@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jalbiser <jalbiser@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 10:22:50 by jalbiser          #+#    #+#             */
-/*   Updated: 2024/05/14 07:44:53 by jalbiser         ###   ########.fr       */
+/*   Updated: 2024/05/21 18:28:15 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@ static void	controller_map(t_game *game, t_map_info *map, int y, int x)
 	{
 		if (mlx_image_to_window((*game).mlx, (*game).wall, x * 128, y
 				* 128) < 0)
-			errors_controller("Error\n lors de l'affichage des images\n", map);
+			errors_controller_game("Error\n lors de l'affichage des images\n", &game);
 	}
 	else if ((*map).map[y][x] == 'C')
 	{
 		if (mlx_image_to_window((*game).mlx, (*game).collectible, x * 128, y
 				* 128) < 0)
-			errors_controller("Error\n lors de l'affichage des images\n", map);
+			errors_controller_game("Error\n lors de l'affichage des images\n", &game);
 	}
 	else if ((*map).map[y][x] == 'E')
 	{
 		if (mlx_image_to_window((*game).mlx, (*game).exit, x * 128, y
 				* 128) < 0)
-			errors_controller("Error\n lors de l'affichage des images\n", map);
+			errors_controller_game("Error\n lors de l'affichage des images\n", &game);
 		(*game).x_e = x;
 		(*game).y_e = y;
 	}
@@ -51,8 +51,8 @@ void	draw_map(t_game *game, t_map_info *map)
 			{
 				if (mlx_image_to_window((*game).mlx, (*game).background, x
 						* 128, y * 128) < 0)
-					errors_controller("Error\n lors de l'affichage des images\n",
-						map);
+					errors_controller_game("Error\n lors de l'affichage des images\n",
+						&game);
 			}
 			controller_map(game, map, y, x);
 			x++;

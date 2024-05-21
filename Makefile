@@ -10,6 +10,7 @@ SRC			= 	./src/basic/ft_strcmp.c\
 				./src/basic/ft_strlen.c\
 				./src/basic/swap_chars.c\
 				./src/game/hooks/hook.c\
+				./src/game/errors_controller_game.c\
 				./src/game/hooks/hook_mov.c\
 				./src/game/player/movements.c\
 				./src/game/player/pos.c\

@@ -1,37 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   spawn_player.c                                     :+:      :+:    :+:   */
+/*   errors_controller_game.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jalbiser <jalbiser@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/13 10:24:39 by jalbiser          #+#    #+#             */
-/*   Updated: 2024/05/21 18:27:34 by jalbiser         ###   ########.fr       */
+/*   Created: 2024/05/21 18:19:54 by jalbiser          #+#    #+#             */
+/*   Updated: 2024/05/21 18:30:28 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	spawn_player(t_game *game, t_map_info *map)
+void	errors_controller_game(char *str, t_game **game)
 {
-	int	y;
-	int	x;
 
-	y = 0;
-	while (y < (*map).y)
-	{
-		x = 0;
-		while (x < (*map).x)
-		{
-			if ((*map).map[y][x] == 'P')
-			{
-				if (mlx_image_to_window((*game).mlx, (*game).player, x * 128, y
-						* 128) < 0)
-					errors_controller_game("Error\n lors de l'affichage des images\n",
-						&game);
-			}
-			x++;
-		}
-		y++;
-	}
+	ft_printf("%s", str);
+	if ((*game)->mlx)
+		mlx_terminate((*game)->mlx);
+	if ((*game)->map)
+		destroy_map((*game)->map);
+	exit(1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movements.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jalbiser <jalbiser@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 10:28:32 by jalbiser          #+#    #+#             */
-/*   Updated: 2024/05/14 10:31:38 by jalbiser         ###   ########.fr       */
+/*   Updated: 2024/05/21 18:29:09 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	movement(t_game *game, int nx, int ny)
 	{
 		if (mlx_image_to_window((*game).mlx, (*game).background, (x + nx) * 128,
 				(y + ny) * 128) < 0)
-			errors_controller("Erreur lors de l'affichage des images\n",
-				(*game).map);
+			errors_controller_game("Erreur lors de l'affichage des images\n",
+				&game);
 		(*game).map->map[y + ny][x + nx] = '0';
 		(*game).map->collectible_count--;
 	}
@@ -35,7 +35,7 @@ void	movement(t_game *game, int nx, int ny)
 	{
 		swap_chars(&(*game).map->map[y][x], &(*game).map->map[y + ny][x + nx]);
 		mlx_delete_image((*game).mlx, (*game).player);
-		react_player(game, (*game).map);
+		react_player(game);
 		spawn_player(game, (*game).map);
 		(*game).movements_count++;
 	}
