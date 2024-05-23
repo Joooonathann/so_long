@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   spawn_player.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalbiser <jalbiser@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: jalbiser <jalbiser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 10:24:39 by jalbiser          #+#    #+#             */
-/*   Updated: 2024/05/21 18:27:34 by jalbiser         ###   ########.fr       */
+/*   Updated: 2024/05/23 10:00:49 by jalbiser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	spawn_player(t_game *game, t_map_info *map)
 			{
 				if (mlx_image_to_window((*game).mlx, (*game).player, x * 128, y
 						* 128) < 0)
-					errors_controller_game("Error\n lors de l'affichage des images\n",
+					errors_controller_game(
+						"Error\n lors de l'affichage des images\n",
 						&game);
 			}
 			x++;
